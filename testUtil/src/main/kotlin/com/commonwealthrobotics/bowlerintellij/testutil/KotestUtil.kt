@@ -69,7 +69,7 @@ infix fun <T> List<T>.shouldNotHaveExactlyInOrder(expected: List<(T) -> Boolean>
     this shouldNot hasExactlyInOrder(expected)
 
 fun <T> hasExactlyInOrder(vararg ps: (T) -> Boolean): Matcher<Collection<T>?> =
-        hasExactlyInOrder(ps.asList())
+    hasExactlyInOrder(ps.asList())
 
 /**
  * Assert that a collection has a subsequence matching the sequence of predicates, possibly with
