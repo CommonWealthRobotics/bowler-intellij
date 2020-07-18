@@ -24,7 +24,7 @@
 ### Run Scripts
 
 - Users can create a run configuration that runs a script (this is just the default Groovy run configuration).
-  - If the user runs in the debug configuration, the IDE should automatically configure remote debugging to connect to the kernel daemon.
+  - If the user runs in the debug configuration, the IDE should automatically configure remote debugging to connect to the kernel daemon. This must be supported regardless of whether the kernel is running on the same machine as the client or is running on a different machine that is reachable via TCP.
 - Scripts can run in parallel.
 
 ### Robot Configuration Editor
