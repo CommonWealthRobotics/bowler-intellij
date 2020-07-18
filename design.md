@@ -19,7 +19,7 @@
     - ! RFC: Maven local should work with Grapes if the kernel runs on the same machine as the Maven local repository. We should investigate this. If it works, then we should officially support this case (and still not support this if the kernel is running on a different machine than the Maven local repository).
   - Users can choose whether the kernel should connect to real hardware or to a simulator.
     - If hardware is selected, the user must supply a connection method (e.g., USB HID, UDP).
-    - If a simulator is selected, the user must select which simulator implementation (e.g., Bullet, PhysX).
+    - If a simulator is selected, the user must select which simulator implementation (e.g., Bullet, PhysX). The IDE must ask the kernel what simulator plugins are available.
 
 ### Run Scripts
 
