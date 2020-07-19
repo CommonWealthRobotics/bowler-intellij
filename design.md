@@ -11,7 +11,7 @@
 
 ### Launch Robots
 
-- Users can create a run configuration that loads a robot via its config file.
+- Users can create a run configuration that loads a robot via its config file and a connection method.
   - Users can add dev'd dependencies by repo or local file path (only supported for dependencies on other library projects).
     - Adding via a repo should clone the repo into a local cache and then always resolve to that cache. Users can edit the repo inside the cache.
     - Adding via a local file path simply resolves to that path. Users can edit the files under that path.
@@ -20,8 +20,7 @@
   - Users can choose whether the kernel should connect to real hardware or to a simulator.
     - If hardware is selected, the user must supply a connection method (e.g., USB HID, UDP).
     - If a simulator is selected, the user must select which simulator implementation (e.g., Bullet, PhysX). The IDE must ask the kernel what simulator plugins are available.
-- A connection method must also be specified.
-  - The user can construct a list of connection methods that are ordered by preference.
+- One or more connection methods may be specified. If more than once connection method is specified, then each method is tried in order. If one method fails, the next method in the list is tried. If all methods fail, an error is thrown.
 
 ### Run Scripts
 
