@@ -20,12 +20,22 @@
   - Users can choose whether the kernel should connect to real hardware or to a simulator.
     - If hardware is selected, the user must supply a connection method (e.g., USB HID, UDP).
     - If a simulator is selected, the user must select which simulator implementation (e.g., Bullet, PhysX). The IDE must ask the kernel what simulator plugins are available.
+- A connection method must also be specified.
+  - The user can construct a list of connection methods that are ordered by preference.
 
 ### Run Scripts
 
 - Users can create a run configuration that runs a script (this is just the default Groovy run configuration).
   - If the user runs in the debug configuration, the IDE should automatically configure remote debugging to connect to the kernel daemon. This must be supported regardless of whether the kernel is running on the same machine as the client or is running on a different machine that is reachable via TCP.
 - Scripts can run in parallel.
+
+### Script Dependency Management
+
+- The IDE must have a way of configuring which Bowler libraries are dev'd, if any.
+  - The user must be able to dev a library by selecting the location of a library's source code.
+  - The user must be able to dev a library by selecting the Git Repo URI of a library. The source code of the library should be put into a directory on disk.
+  - The user must be able to remove a dev.
+  - Adding a dev must add that source code folder to their project. ! RFC: Do we want this? It seems overkill because I expect that only intermediate to advanced users will dev things.
 
 ### Robot Configuration Editor
 
@@ -39,12 +49,29 @@
   - Kinematics (e.g., bases, limbs, links, DH parameters, root offsets).
   - Scripts (e.g., body/limb/joint controllers, body/limb CAD generators).
 
+### Plugins
+
+- The IDE must be able to display a searchable list of plugins.
+  - The IDE must display the group, name, and version triple.
+  - The IDe must display the plugin artifact's description.
+  - By default, the IDE displays all plugins in the group `com.commonwealthrobotics`.
+  - The user may filter for a specific type of plugin (e.g. device, toolchain, device resource, or simulator).
+- There is a list of default plugins which are installed by default.
+
+### Git and GitHub Integration
+
+- The IDE must present a simplified view of Git and GitHub to the user.
+  - The user must be able to commit and push their changes from one simplified modal interface.
+  - The user must be able to commit and push their changes in a dev to a fork from one simplified modal interface. ! RFC: Do we want this? It seems overkill because I expect that only intermediate to advanced users will dev things.
+
 ### Interface with the Kernel
 
 - The kernel daemon must be started and connected to (if not already connected) when the user loads a project.
 - If the kernel daemon becomes unresponsive, it must be restarted.
 - If the project is closed, the kernel daemon must be killed.
   - There must be a graceful shutdown method that is tried first. If that fails, the process must be killed by the OS.
+- If the kernel needs credentials, the IDE automatically gives the user's credentials.
+  - The user can disable handling this automatically.
 
 ### Miscellaneous
 
