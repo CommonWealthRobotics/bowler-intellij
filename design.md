@@ -4,10 +4,11 @@
 
 ### Create a Project
 
-- Users can create a new project using IntelliJ's project creation dialog
-  - Projects can be libraries (no robot config file) or robots (one robot config file)
-  - A new Git repo will be initialized in the project directory
-    - A gitignore file will be added that has the relevant entries for our software, IDEs (e.g., Intellij, Eclipse, vscode), and common technologes (e.g., Java, Gradle)
+- Users can create a new project using IntelliJ's project creation dialog.
+  - Projects can be libraries (no robot config file) or robots (one robot config file).
+  - A new Git repo will be initialized in the project directory.
+    - A gitignore file will be added that has the relevant entries for our software, IDEs (e.g., Intellij, Eclipse, vscode), and common technologes (e.g., Java, Gradle).
+      - The directory for persistent storage for scripts is gitignore'd by default.
 
 ### Launch Robots
 
@@ -34,7 +35,6 @@
   - The user must be able to dev a library by selecting the location of a library's source code.
   - The user must be able to dev a library by selecting the Git Repo URI of a library. The source code of the library should be put into a directory on disk.
   - The user must be able to remove a dev.
-  - Adding a dev must add that source code folder to their project. ! RFC: Do we want this? It seems overkill because I expect that only intermediate to advanced users will dev things.
 
 ### Robot Configuration Editor
 
@@ -61,20 +61,30 @@
 
 - The IDE must present a simplified view of Git and GitHub to the user.
   - The user must be able to commit and push their changes from one simplified modal interface.
-  - The user must be able to commit and push their changes in a dev to a fork from one simplified modal interface. ! RFC: Do we want this? It seems overkill because I expect that only intermediate to advanced users will dev things.
 
 ### Interface with the Kernel
 
 - The kernel daemon must be started and connected to (if not already connected) when the user loads a project.
+  - When the kernel is connected, the plugin should load the display daemon and connect the kernel to it.
 - If the kernel daemon becomes unresponsive, it must be restarted.
-- If the project is closed, the kernel daemon must be killed.
+- If the project is closed, the kernel and display daemons must be killed.
   - There must be a graceful shutdown method that is tried first. If that fails, the process must be killed by the OS.
 - If the kernel needs credentials, the IDE automatically gives the user's credentials.
   - The user can disable handling this automatically.
 
+### Installing and Updating
+
+- Installing and updating the plugin is handled through the plugin marketplace
+- The plugin needs to be able to download ZGC and check for ZGC updates.
+- The plugin needs to be able to check for kernel and display updates
+  - If an update is available, then the plugin must ask the user if they want to update. This modal dialog should present the current and new versions to the user.
+  - If the kernel is not remote, then it needs to download the new version and give the file path to the kernel so that it can update and restart itself.
+    - This workflow should also be used for updating the display. The kernel and the display should use the same updater bootstrap library.
+  - If the kernel is remote, then it needs to use the gRPC call to send the Jar over to the embedded computer and have it update and restart the kernel.
+- Single install: the user only installs an IntelliJ plugin. All other dependencies (including platform-specific artifacts) must be bundled inside the plugin Jar and self-extracted at runtime.
+
 ### Miscellaneous
 
-- Single install: the user only installs an IntelliJ plugin. All other dependencies (including platform-specific artifacts) must be bundled inside the plugin Jar and self-extracted at runtime.
 - Progress updates for long-running kernel operations.
   - For example, when the kernel starts cloning a repo, the user should see a progress bar that indicated when the clone is in progress.
 - Warnings for poor Git behavior.
