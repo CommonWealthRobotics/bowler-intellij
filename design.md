@@ -27,6 +27,8 @@
 
 - Users can create a run configuration that runs a script (this is just the default Groovy run configuration).
   - If the user runs in the debug configuration, the IDE should automatically configure remote debugging to connect to the kernel daemon. This must be supported regardless of whether the kernel is running on the same machine as the client or is running on a different machine that is reachable via TCP.
+    - This will involve starting a kernel daemon that is configured for remote debugging. You cannot take a kernel that was launched without remote debugging and add remote debugging capabilities to it at runtime.
+    - This will also involve asking the kernel what its JDWB port is, after it is running. There is a kernel gRPC call for that.
 - Scripts can run in parallel.
 
 ### Script Dependency Management
@@ -69,8 +71,13 @@
 - If the kernel daemon becomes unresponsive, it must be restarted.
 - If the project is closed, the kernel and display daemons must be killed.
   - There must be a graceful shutdown method that is tried first. If that fails, the process must be killed by the OS.
-- If the kernel needs credentials, the IDE automatically gives the user's credentials.
-  - The user can disable handling this automatically.
+- If the kernel needs credentials, the IDE prompts the user for their credentials.
+  - The user is first presented with a modal dialog that asks them to enter their credentials. The user also has options to control how the credentials are remembered (e.g. `yes`, `no`, `only for this session`). The user may `submit` or `cancel` their submission of their credentials.
+  - If the user's credentials worked and they selected `yes`, then the IDE should automatically send their credentials to the kernel if it asks for them and should persist the credentials between IDE sessions.
+  - If the user's credentials worked and they selected `only for this session`, then the IDE should automatically send their credentials to the kernel if it asks for them and should clear the credentials once the user closes the IDE.
+  - If the user's credentials worked and they selected `no`, then the IDE should not persist their credentials and should prompt the user for their credentials if the kernel asks for them again.
+  - If the user's credentials did not work, the IDE should ask the user to enter their credentials again.
+  - If the user selected `cancel` instead of `submit`, then the IDE should respond to the kernel that its credentials request was denied. This will most likely cause the script to fail.
 
 ### Installing and Updating
 
@@ -81,7 +88,7 @@
   - If the kernel is not remote, then it needs to download the new version and give the file path to the kernel so that it can update and restart itself.
     - This workflow should also be used for updating the display. The kernel and the display should use the same updater bootstrap library.
   - If the kernel is remote, then it needs to use the gRPC call to send the Jar over to the embedded computer and have it update and restart the kernel.
-- Single install: the user only installs an IntelliJ plugin. All other dependencies (including platform-specific artifacts) must be bundled inside the plugin Jar and self-extracted at runtime.
+- Single install: the user only installs an IntelliJ plugin. All other dependencies (like the kernel and display Jars and the JVM) must be downloaded and installed using the normal updating machinery.
 
 ### Miscellaneous
 
