@@ -36,6 +36,9 @@ object Versions {
     const val kotlinLogging = "1.7.+"
     const val mockk = "1.10.+"
     const val arrow = "0.10.+"
+    const val protobufJava = "3.12.4"
+    const val grpcAll = "1.31.0"
+    const val javaxAnnotationAPI = "1.3.2"
 
     const val jacocoTool = "0.8.5"
     const val gradleWrapper = "6.5.1"
