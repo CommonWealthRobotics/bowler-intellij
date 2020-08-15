@@ -11,6 +11,7 @@ plugins {
     kotlin("jvm") version Versions.kotlin
     id("org.jlleitschuh.gradle.ktlint") version Versions.ktlintPlugin
     id("io.gitlab.arturbosch.detekt") version Versions.detektPlugin
+    id("org.jetbrains.intellij") version Versions.intellijPlugin
 }
 
 val kotlinProjects = listOf(
@@ -220,4 +221,26 @@ val jacocoRootReport by tasks.creating(JacocoReport::class) {
 tasks.wrapper {
     distributionType = Wrapper.DistributionType.ALL
     gradleVersion = Versions.gradleWrapper
+}
+
+intellij {
+    version = Versions.intellijTarget
+    setPlugins(
+            "Groovy"
+    )
+}
+
+tasks.publishPlugin {
+    // Credit:
+    // https://github.com/minecraft-dev/MinecraftDev/blob/e32a4a92085bf34690b3c3fd4c395f3b2be7bd95/build.gradle.kts#L126-L128
+    properties["buildNumber"]?.let { buildNumber ->
+        project.version = "${project.version}-$buildNumber"
+    }
+    token(System.getenv("INTELLIJ_PLUGIN_PUBLISH_TOKEN"))
+}
+
+tasks.patchPluginXml {
+    version(project.version)
+    sinceBuild(Versions.intellijSince)
+    untilBuild(Versions.intellijUntil)
 }
