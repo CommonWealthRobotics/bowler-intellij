@@ -219,5 +219,5 @@ val jacocoRootReport by tasks.creating(JacocoReport::class) {
 
 tasks.wrapper {
     distributionType = Wrapper.DistributionType.ALL
-    version = Versions.gradleWrapper
+    gradleVersion = Versions.gradleWrapper
 }
