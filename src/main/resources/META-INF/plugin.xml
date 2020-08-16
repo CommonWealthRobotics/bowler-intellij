@@ -17,7 +17,7 @@
 <idea-plugin>
     <id>com.commonwealthrobotics.bowlerintellij</id>
     <name>Bowler Studio</name>
-    <vendor url="https://www.commonwealthrobotics.com">CommonWealthRobotics</vendor>
+    <vendor url="https://commonwealthrobotics.com">CommonWealthRobotics</vendor>
 
     <!-- Product and plugin compatibility requirements -->
     <!-- https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html -->
