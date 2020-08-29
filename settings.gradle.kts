@@ -5,6 +5,7 @@ plugins {
 rootProject.name = "bowler-intellij"
 
 include(":logging")
+include(":plugin")
 include(":proto")
 include(":testUtil")
 include(":util")
