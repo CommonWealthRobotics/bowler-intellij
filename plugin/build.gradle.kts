@@ -1,8 +1,13 @@
 plugins {
+    groovy
+    idea
     id("org.jetbrains.intellij") version Versions.intellijPlugin
 }
 
 description = "IntelliJ platform plugin for Bowler."
+
+val jflex: Configuration by configurations.creating
+val jflexSkeleton: Configuration by configurations.creating
 
 dependencies {
     api(project(":util"))
@@ -10,9 +15,14 @@ dependencies {
     implementation(group = "io.arrow-kt", name = "arrow-syntax", version = Versions.arrow)
     implementation(group = "io.arrow-kt", name = "arrow-optics", version = Versions.arrow)
 
+    jflex("org.jetbrains.idea:jflex:1.7.0-b7f882a")
+    jflexSkeleton("org.jetbrains.idea:jflex:1.7.0-c1fdf11:idea@skeleton")
+
     implementation(project(":logging"))
 
     testImplementation(project(":testUtil"))
+
+    idea
 }
 
 intellij {

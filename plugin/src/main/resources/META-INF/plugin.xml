@@ -24,5 +24,7 @@
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
+        <moduleType id="COMMONWEALTHROBOTICS_BOWLER_MODULE_TYPE" implementationClass="com.commonwealthrobotics.bowlerintellij.module.BowlerModuleType" />
+        <moduleBuilder id="COMMONWEALTHROBOTICS_BOWLER_MODULE" builderClass="com.commonwealthrobotics.bowlerintellij.module.BowlerModuleBuilder" />
     </extensions>
 </idea-plugin>
