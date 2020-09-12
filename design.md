@@ -49,6 +49,7 @@
     - Allocating a resource to a device must be validated. If a user puts a servo on a PWM pin, that is allowed. If a user puts a servo on an analog input pin, that is not allowed and must show an error in the UI.
   - Kinematics (e.g., bases, limbs, links, DH parameters, root offsets).
   - Scripts (e.g., body/limb/joint controllers, body/limb CAD generators).
+  - Computing center of mass from vitamins (and optionally, from generated CAD as well)
 
 ### Plugins
 
