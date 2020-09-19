@@ -18,6 +18,7 @@ package com.commonwealthrobotics.bowlerintellij.module
 
 import com.intellij.openapi.module.ModuleType
 import javax.swing.Icon
+import javax.swing.ImageIcon
 
 class BowlerModuleType : ModuleType<BowlerModuleBuilder>("COMMONWEALTHROBOTICS_BOWLER_MODULE_TYPE") {
     override fun createModuleBuilder(): BowlerModuleBuilder = BowlerModuleBuilder()
@@ -26,7 +27,5 @@ class BowlerModuleType : ModuleType<BowlerModuleBuilder>("COMMONWEALTHROBOTICS_B
 
     override fun getDescription(): String = "Support for the Bowler Framework by Common Wealth Robotics"
 
-    override fun getNodeIcon(isOpened: Boolean): Icon {
-        TODO("Not yet implemented")
-    }
+    override fun getNodeIcon(isOpened: Boolean): Icon = ImageIcon()
 }

@@ -25,5 +25,6 @@ class BowlerModuleBuilder : ModuleBuilder(), ModuleBuilderListener {
     override fun getModuleType(): ModuleType<*> = BowlerModuleType()
 
     override fun moduleCreated(module: Module) {
+        // TODO: initialize module.
     }
 }
