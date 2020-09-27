@@ -16,15 +16,28 @@
  */
 package com.commonwealthrobotics.bowlerintellij.module
 
-import com.intellij.ide.util.projectWizard.ModuleBuilder
-import com.intellij.ide.util.projectWizard.ModuleBuilderListener
-import com.intellij.openapi.module.Module
-import com.intellij.openapi.module.ModuleType
+import com.intellij.execution.configurations.RunConfiguration
+import com.intellij.openapi.options.SettingsEditor
+import com.intellij.openapi.project.Project
+import com.intellij.ui.layout.panel
+import javax.swing.JComponent
 
-class BowlerModuleBuilder : ModuleBuilder(), ModuleBuilderListener {
-    override fun getModuleType(): ModuleType<*> = BowlerModuleType()
+class BowlerRunConfigurationEditor(private val project: Project) : SettingsEditor<RunConfiguration>() {
 
-    override fun moduleCreated(module: Module) {
-        // TODO: initialize module.
+    override fun resetEditorFrom(s: RunConfiguration) {
+    }
+
+    override fun applyEditorTo(s: RunConfiguration) {
+    }
+
+    override fun createEditor(): JComponent {
+        return panel {
+            row {
+                label("Bowler script")
+                textFieldWithBrowseButton(project = project) {
+                    it.name
+                }
+            }
+        }
     }
 }

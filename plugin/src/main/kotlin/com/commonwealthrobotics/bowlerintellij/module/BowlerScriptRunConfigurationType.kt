@@ -16,16 +16,30 @@
  */
 package com.commonwealthrobotics.bowlerintellij.module
 
-import com.intellij.openapi.module.ModuleType
+import com.intellij.execution.configurations.ConfigurationFactory
+import com.intellij.execution.configurations.ConfigurationType
+import icons.JetgroovyIcons
 import javax.swing.Icon
-import javax.swing.ImageIcon
 
-class BowlerModuleType : ModuleType<BowlerModuleBuilder>("COMMONWEALTHROBOTICS_BOWLER_MODULE_TYPE") {
-    override fun createModuleBuilder(): BowlerModuleBuilder = BowlerModuleBuilder()
+class BowlerScriptRunConfigurationType : ConfigurationType {
 
-    override fun getName(): String = "Common Wealth Robotics Bowler Module"
+    override fun getDisplayName(): String {
+        return "Bowler"
+    }
 
-    override fun getDescription(): String = "Support for the Bowler Framework by Common Wealth Robotics"
+    override fun getConfigurationTypeDescription(): String {
+        return "Bowler script"
+    }
 
-    override fun getNodeIcon(isOpened: Boolean): Icon = ImageIcon()
+    override fun getIcon(): Icon {
+        return JetgroovyIcons.Groovy.Groovy_16x16
+    }
+
+    override fun getId(): String {
+        return "BowlerScriptRunConfiguration"
+    }
+
+    override fun getConfigurationFactories(): Array<ConfigurationFactory> {
+        return arrayOf(BowlerScriptRunConfigurationFactory())
+    }
 }

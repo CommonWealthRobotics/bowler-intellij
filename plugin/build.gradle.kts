@@ -28,7 +28,7 @@ dependencies {
 intellij {
     version = Versions.intellijTarget
     setPlugins(
-            "Groovy"
+        "Groovy"
     )
 }
 
