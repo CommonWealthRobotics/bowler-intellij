@@ -16,28 +16,34 @@
  */
 package com.commonwealthrobotics.bowlerintellij.module
 
-import com.intellij.execution.configurations.RunConfiguration
 import com.intellij.openapi.options.SettingsEditor
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.ui.TextFieldWithBrowseButton
+import com.intellij.ui.layout.CellBuilder
 import com.intellij.ui.layout.panel
 import javax.swing.JComponent
 
-class BowlerRunConfigurationEditor(private val project: Project) : SettingsEditor<RunConfiguration>() {
+class BowlerRunConfigurationEditor(private val project: Project) : SettingsEditor<BowlerScriptRunConfiguration>() {
 
-    override fun resetEditorFrom(s: RunConfiguration) {
+    private lateinit var textFieldWithBrowseButton: CellBuilder<TextFieldWithBrowseButton>
+    private val panel = panel {
+        row {
+            label("Bowler script")
+            textFieldWithBrowseButton = textFieldWithBrowseButton(value = "", project = project) {
+                it.path
+            }
+        }
     }
 
-    override fun applyEditorTo(s: RunConfiguration) {
+    override fun resetEditorFrom(s: BowlerScriptRunConfiguration) {
+        textFieldWithBrowseButton.component.text = s.scriptFilePath
+    }
+
+    override fun applyEditorTo(s: BowlerScriptRunConfiguration) {
+        s.scriptFilePath = textFieldWithBrowseButton.component.text
     }
 
     override fun createEditor(): JComponent {
-        return panel {
-            row {
-                label("Bowler script")
-                textFieldWithBrowseButton(project = project) {
-                    it.name
-                }
-            }
-        }
+        return panel
     }
 }

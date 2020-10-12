@@ -16,7 +16,6 @@
  */
 package com.commonwealthrobotics.bowlerintellij.module
 
-import com.intellij.execution.DefaultExecutionResult
 import com.intellij.execution.Executor
 import com.intellij.execution.configurations.ConfigurationFactory
 import com.intellij.execution.configurations.RunConfiguration
@@ -25,7 +24,10 @@ import com.intellij.execution.configurations.RunProfileState
 import com.intellij.execution.runners.ExecutionEnvironment
 import com.intellij.openapi.options.SettingsEditor
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.util.xmlb.XmlSerializer
 import mu.KotlinLogging
+import org.jdom.Element
 
 class BowlerScriptRunConfiguration(
     project: Project,
@@ -33,18 +35,23 @@ class BowlerScriptRunConfiguration(
     name: String?
 ) : RunConfigurationBase<Any>(project, factory, name) {
 
+    var scriptFilePath: String = ""
+
     override fun getState(executor: Executor, environment: ExecutionEnvironment): RunProfileState? {
-        return RunProfileState { executor, runner ->
-            logger.debug { "running" }
-            DefaultExecutionResult()
-        }
+        return BowlerScriptRunProfileState(environment)
     }
 
     override fun getConfigurationEditor(): SettingsEditor<out RunConfiguration> {
         return BowlerRunConfigurationEditor(project)
     }
 
-    companion object {
-        private val logger = KotlinLogging.logger { }
+    override fun readExternal(element: Element) {
+        super.readExternal(element)
+        XmlSerializer.deserializeInto(this, element)
+    }
+
+    override fun writeExternal(element: Element) {
+        super.writeExternal(element)
+        XmlSerializer.serializeInto(this, element)
     }
 }
