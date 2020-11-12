@@ -21,13 +21,18 @@ import com.intellij.execution.configurations.ConfigurationFactory
 import com.intellij.execution.configurations.RunConfiguration
 import com.intellij.execution.configurations.RunConfigurationBase
 import com.intellij.execution.configurations.RunProfileState
+import com.intellij.execution.configurations.RuntimeConfigurationError
 import com.intellij.execution.runners.ExecutionEnvironment
 import com.intellij.openapi.options.SettingsEditor
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.project.guessProjectDir
+import com.intellij.openapi.util.io.FileUtil
+import com.intellij.openapi.util.text.StringUtil
+import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.util.xmlb.XmlSerializer
-import mu.KotlinLogging
 import org.jdom.Element
+import org.jetbrains.plugins.groovy.GroovyFileType
 
 class BowlerScriptRunConfiguration(
     project: Project,
@@ -53,5 +58,33 @@ class BowlerScriptRunConfiguration(
     override fun writeExternal(element: Element) {
         super.writeExternal(element)
         XmlSerializer.serializeInto(this, element)
+    }
+
+    fun getScriptFile(): VirtualFile {
+        if (StringUtil.isEmptyOrSpaces(scriptFilePath)) {
+            throw RuntimeConfigurationError(BIB.message("path.to.script.not.set"))
+        }
+
+        val file = LocalFileSystem.getInstance().findFileByPath(scriptFilePath)
+        if (file == null || file.isDirectory) {
+            throw RuntimeConfigurationError(BIB.message("script.file.not.found", FileUtil.toSystemDependentName(scriptFilePath)))
+        }
+
+        if (file.fileType != GroovyFileType.GROOVY_FILE_TYPE) {
+            throw RuntimeConfigurationError(BIB.message("script.file.must.be.groovy.file", FileUtil.toSystemDependentName(scriptFilePath)))
+        }
+
+        val projectPath = project.guessProjectDir()?.path
+        if (projectPath == null) {
+            throw RuntimeConfigurationError("Default project?")
+        } else if (!file.path.startsWith(projectPath)) {
+            throw RuntimeConfigurationError(BIB.message("script.file.must.be.in.project", FileUtil.toSystemDependentName(scriptFilePath)))
+        }
+
+        return file
+    }
+
+    override fun toString(): String {
+        return "BowlerScriptRunConfiguration(scriptFilePath='$scriptFilePath')"
     }
 }

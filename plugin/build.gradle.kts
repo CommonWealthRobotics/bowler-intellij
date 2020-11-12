@@ -9,27 +9,43 @@ description = "IntelliJ platform plugin for Bowler."
 val jflex: Configuration by configurations.creating
 val jflexSkeleton: Configuration by configurations.creating
 
+repositories {
+    maven {
+        setUrl("https://dl.bintray.com/commonwealthrobotics/maven-artifacts")
+        content {
+            includeGroup("com.commonwealthrobotics")
+        }
+    }
+    mavenLocal()
+}
+
 dependencies {
     api(project(":util"))
-    implementation(group = "io.arrow-kt", name = "arrow-core", version = Versions.arrow)
-    implementation(group = "io.arrow-kt", name = "arrow-syntax", version = Versions.arrow)
-    implementation(group = "io.arrow-kt", name = "arrow-optics", version = Versions.arrow)
+
+    // TODO: Undo after solving the runIde problem
+//    implementation(group = "io.arrow-kt", name = "arrow-core", version = Versions.arrow)
+//    implementation(group = "io.arrow-kt", name = "arrow-syntax", version = Versions.arrow)
+//    implementation(group = "io.arrow-kt", name = "arrow-optics", version = Versions.arrow)
+    implementation(group = "io.arrow-kt", name = "arrow-fx", version = Versions.arrow)
+
+    // TODO: Undo after solving the runIde problem
+//    implementation(group = "com.commonwealthrobotics", name = "bowler-kernel-server", version = Versions.bowlerKernel, classifier = "all")
+
+    // TODO: Undo after solving the runIde problem
+//    implementation(project(":proto"))
 
     jflex("org.jetbrains.idea:jflex:1.7.0-b7f882a")
     jflexSkeleton("org.jetbrains.idea:jflex:1.7.0-c1fdf11:idea@skeleton")
-
-    implementation(project(":logging"))
+    idea
 
     testImplementation(project(":testUtil"))
 
-    idea
+    runtimeOnly(project(":logging"))
 }
 
 intellij {
     version = Versions.intellijTarget
-    setPlugins(
-        "Groovy"
-    )
+    setPlugins("Groovy")
 }
 
 tasks.publishPlugin {

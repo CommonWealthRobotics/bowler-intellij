@@ -16,6 +16,7 @@ plugins {
 val kotlinProjects = listOf(
     project(":testUtil"),
     project(":plugin"),
+    project(":proto"),
     project(":util")
 )
 
@@ -30,11 +31,7 @@ allprojects {
 
     repositories {
         mavenCentral()
-        jcenter {
-            content {
-                includeGroup("org.jetbrains.kotlinx")
-            }
-        }
+        jcenter()
     }
 
     // Configures the Jacoco tool version to be the same for all projects that have it applied.
@@ -159,6 +156,7 @@ configure(kotlinProjects) {
     dependencies {
         implementation(group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", version = Versions.kotlin)
         implementation(group = "org.jetbrains.kotlin", name = "kotlin-reflect", version = Versions.kotlin)
+        implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version = Versions.kotlinCoroutines)
 
         implementation(group = "io.github.microutils", name = "kotlin-logging", version = Versions.kotlinLogging)
     }
