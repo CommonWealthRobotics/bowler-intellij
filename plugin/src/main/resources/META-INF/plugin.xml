@@ -27,7 +27,7 @@
     <depends>com.intellij.modules.platform</depends>
     <depends>org.intellij.groovy</depends>
 
-    <idea-version since-build="193" until-build="193.*" />
+    <idea-version since-build="203" until-build="203.*" />
 
     <extensions defaultExtensionNs="com.intellij">
         <configurationType implementation="com.commonwealthrobotics.bowlerintellij.module.BowlerScriptRunConfigurationType" />

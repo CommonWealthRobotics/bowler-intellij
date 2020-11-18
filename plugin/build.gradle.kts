@@ -22,17 +22,14 @@ repositories {
 dependencies {
     api(project(":util"))
 
-    // TODO: Undo after solving the runIde problem
-//    implementation(group = "io.arrow-kt", name = "arrow-core", version = Versions.arrow)
-//    implementation(group = "io.arrow-kt", name = "arrow-syntax", version = Versions.arrow)
-//    implementation(group = "io.arrow-kt", name = "arrow-optics", version = Versions.arrow)
+    implementation(group = "io.arrow-kt", name = "arrow-core", version = Versions.arrow)
+    implementation(group = "io.arrow-kt", name = "arrow-syntax", version = Versions.arrow)
+    implementation(group = "io.arrow-kt", name = "arrow-optics", version = Versions.arrow)
     implementation(group = "io.arrow-kt", name = "arrow-fx", version = Versions.arrow)
 
-    // TODO: Undo after solving the runIde problem
-//    implementation(group = "com.commonwealthrobotics", name = "bowler-kernel-server", version = Versions.bowlerKernel, classifier = "all")
+    implementation(group = "com.commonwealthrobotics", name = "bowler-kernel-server", version = Versions.bowlerKernel)
 
-    // TODO: Undo after solving the runIde problem
-//    implementation(project(":proto"))
+    implementation(project(":proto"))
 
     jflex("org.jetbrains.idea:jflex:1.7.0-b7f882a")
     jflexSkeleton("org.jetbrains.idea:jflex:1.7.0-c1fdf11:idea@skeleton")

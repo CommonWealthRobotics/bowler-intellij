@@ -43,8 +43,8 @@ object Versions {
     const val grpcKotlin = "0.1.5"
     const val javaxAnnotationAPI = "1.3.+"
     const val intellijTarget = "2020.2"
-    const val intellijSince = "202"
-    const val intellijUntil = "202.*"
+    const val intellijSince = "203"
+    const val intellijUntil = "203.*"
     const val bowlerKernel = "0.3.36"
 
     const val jacocoTool = "0.8.5"
