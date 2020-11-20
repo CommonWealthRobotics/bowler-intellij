@@ -67,18 +67,24 @@ class BowlerScriptRunConfiguration(
 
         val file = LocalFileSystem.getInstance().findFileByPath(scriptFilePath)
         if (file == null || file.isDirectory) {
-            throw RuntimeConfigurationError(BIB.message("script.file.not.found", FileUtil.toSystemDependentName(scriptFilePath)))
+            throw RuntimeConfigurationError(
+                BIB.message("script.file.not.found", FileUtil.toSystemDependentName(scriptFilePath))
+            )
         }
 
         if (file.fileType != GroovyFileType.GROOVY_FILE_TYPE) {
-            throw RuntimeConfigurationError(BIB.message("script.file.must.be.groovy.file", FileUtil.toSystemDependentName(scriptFilePath)))
+            throw RuntimeConfigurationError(
+                BIB.message("script.file.must.be.groovy.file", FileUtil.toSystemDependentName(scriptFilePath))
+            )
         }
 
         val projectPath = project.guessProjectDir()?.path
         if (projectPath == null) {
             throw RuntimeConfigurationError("Default project?")
         } else if (!file.path.startsWith(projectPath)) {
-            throw RuntimeConfigurationError(BIB.message("script.file.must.be.in.project", FileUtil.toSystemDependentName(scriptFilePath)))
+            throw RuntimeConfigurationError(
+                BIB.message("script.file.must.be.in.project", FileUtil.toSystemDependentName(scriptFilePath))
+            )
         }
 
         return file

@@ -1,14 +1,29 @@
+/*
+ * This file is part of bowler-intellij.
+ *
+ * bowler-intellij is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * bowler-intellij is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with bowler-intellij.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package com.commonwealthrobotics.bowlerintellij.module
 
 import com.intellij.AbstractBundle
-import com.intellij.CommonBundle
+import mu.KotlinLogging
+import org.jetbrains.annotations.NonNls
+import org.jetbrains.annotations.PropertyKey
 import java.lang.ref.Reference
 import java.lang.ref.SoftReference
 import java.util.Locale
 import java.util.ResourceBundle
-import mu.KotlinLogging
-import org.jetbrains.annotations.NonNls
-import org.jetbrains.annotations.PropertyKey
 
 /**
  * The BowlerIntelliJBundle (BIB) for specifying localizable strings.

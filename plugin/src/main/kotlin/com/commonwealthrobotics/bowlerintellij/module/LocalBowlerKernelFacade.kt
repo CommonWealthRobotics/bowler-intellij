@@ -1,6 +1,21 @@
+/*
+ * This file is part of bowler-intellij.
+ *
+ * bowler-intellij is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * bowler-intellij is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with bowler-intellij.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package com.commonwealthrobotics.bowlerintellij.module
 
-import com.commonwealthrobotics.bowlerkernel.server.KernelServer
 import com.commonwealthrobotics.proto.script_host.ConfirmationValue
 import com.commonwealthrobotics.proto.script_host.RequestError
 import com.commonwealthrobotics.proto.script_host.ScriptHostGrpcKt
@@ -10,18 +25,19 @@ import com.intellij.execution.DefaultExecutionResult
 import com.intellij.execution.ExecutionResult
 import com.intellij.openapi.project.guessProjectDir
 import io.grpc.ManagedChannelBuilder
-import java.util.concurrent.atomic.AtomicLong
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.selects.select
 import mu.KotlinLogging
+import java.util.concurrent.atomic.AtomicLong
 
-class LocalBowlerKernelFacade {
+class LocalBowlerKernelFacade(
+    private val kernelDaemonConnectionManager: KernelDaemonConnectionManager
+) {
 
     private var started = false
-    private lateinit var server: KernelServer
     private lateinit var stub: ScriptHostGrpcKt.ScriptHostCoroutineStub
     private val runScriptRequests = mutableMapOf<String, Long>()
 
@@ -29,13 +45,13 @@ class LocalBowlerKernelFacade {
 
     private fun start() {
         try {
-            // TODO: Use the CLI instead. Make the path to the CLI user-configurable.
-            server = KernelServer()
-            server.start()
-            val channel = ManagedChannelBuilder.forAddress("localhost", server.port).usePlaintext().build()
+            kernelDaemonConnectionManager.ensureStarted()
+            val channel = ManagedChannelBuilder.forAddress("localhost", kernelDaemonConnectionManager.getPort())
+                .usePlaintext()
+                .build()
             stub = ScriptHostGrpcKt.ScriptHostCoroutineStub(channel)
         } catch (ex: Throwable) {
-            logger.debug(ex) { "Failed to start server." }
+            logger.debug(ex) { "Failed to connect to the kernel daemon." }
             throw ex
         }
     }
@@ -66,45 +82,51 @@ class LocalBowlerKernelFacade {
         val requestId = nextRequestId()
         runScriptRequests[relativeScriptPath] = requestId
 
-        val session = stub.session(flow {
-            val msg = SessionClientMessage.newBuilder().apply {
-                runRequestBuilder.requestId = requestId
+        val session = stub.session(
+            flow {
+                val msg = SessionClientMessage.newBuilder().apply {
+                    runRequestBuilder.requestId = requestId
 
-                // TODO: Get the remoteRemote and revision from the project's `origin` remote and local HEAD
-                runRequestBuilder.fileBuilder.projectBuilder.repoRemote = ""
-                runRequestBuilder.fileBuilder.projectBuilder.revision = ""
-                // TODO: Set the patch via a real Git diff
-                runRequestBuilder.fileBuilder.projectBuilder.patchBuilder.patch = scriptContents
-                runRequestBuilder.fileBuilder.path = relativeScriptPath
-            }.build()
-            logger.debug { "Sending request: $msg" }
-            emit(msg)
+                    // TODO: Get the remoteRemote and revision from the project's `origin` remote and local HEAD
+                    runRequestBuilder.fileBuilder.projectBuilder.repoRemote = ""
+                    runRequestBuilder.fileBuilder.projectBuilder.revision = ""
+                    // TODO: Set the patch via a real Git diff
+                    runRequestBuilder.fileBuilder.projectBuilder.patchBuilder.patch = scriptContents
+                    runRequestBuilder.fileBuilder.path = relativeScriptPath
+                }.build()
+                logger.debug { "Sending request: $msg" }
+                emit(msg)
 
-            do {
-                val cont = select<Boolean> {
-                    responses.onReceive {
-                        val response = it.build()
-                        logger.debug { "Sending response: $response" }
-                        emit(response)
-                        true
+                do {
+                    val cont = select<Boolean> {
+                        responses.onReceive {
+                            val response = it.build()
+                            logger.debug { "Sending response: $response" }
+                            emit(response)
+                            true
+                        }
                     }
-                }
-            } while (cont)
-        })
+                } while (cont)
+            }
+        )
 
         var error: RequestError? = null
         // TODO: Return some sort of execution result immediately and run the session in some threaded, suspending scope
         runBlocking {
             session.collect {
                 when {
-                    it.hasCredentialsRequest() -> responses.send(SessionClientMessage.newBuilder().apply {
-                        credentialsResponseBuilder.requestId = requestId
-                    })
+                    it.hasCredentialsRequest() -> responses.send(
+                        SessionClientMessage.newBuilder().apply {
+                            credentialsResponseBuilder.requestId = requestId
+                        }
+                    )
 
-                    it.hasConfirmationRequest() -> responses.send(SessionClientMessage.newBuilder().apply {
-                        confirmationResponseBuilder.requestId = requestId
-                        confirmationResponseBuilder.response = ConfirmationValue.ALLOWED
-                    })
+                    it.hasConfirmationRequest() -> responses.send(
+                        SessionClientMessage.newBuilder().apply {
+                            confirmationResponseBuilder.requestId = requestId
+                            confirmationResponseBuilder.response = ConfirmationValue.ALLOWED
+                        }
+                    )
 
                     it.hasError() -> error = it.error
                 }

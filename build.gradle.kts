@@ -184,6 +184,11 @@ configure(kotlinProjects) {
         version.set(Versions.ktlint)
         enableExperimentalRules.set(true)
         additionalEditorconfigFile.set(file(rootProject.rootDir.toPath().resolve("config").resolve("ktlint").resolve(".editorconfig")))
+        filter {
+            exclude {
+                it.file.path.contains("generated/")
+            }
+        }
     }
 
     detekt {
