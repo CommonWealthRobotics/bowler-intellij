@@ -14,14 +14,17 @@
  * You should have received a copy of the GNU General Public License
  * along with bowler-intellij.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.commonwealthrobotics.bowlerintellij.module
+package com.commonwealthrobotics.bowlerintellij.plugin
 
 import com.intellij.execution.configurations.ConfigurationFactory
 import com.intellij.execution.configurations.ConfigurationType
 import icons.JetgroovyIcons
+import org.koin.core.KoinComponent
 import javax.swing.Icon
 
-class BowlerScriptRunConfigurationType : ConfigurationType {
+class BowlerScriptRunConfigurationType(
+    private val koinComponent: KoinComponent = GlobalPluginState.koinComponent
+) : ConfigurationType {
 
     override fun getDisplayName(): String {
         return "Bowler"
@@ -40,6 +43,6 @@ class BowlerScriptRunConfigurationType : ConfigurationType {
     }
 
     override fun getConfigurationFactories(): Array<ConfigurationFactory> {
-        return arrayOf(BowlerScriptRunConfigurationFactory())
+        return arrayOf(BowlerScriptRunConfigurationFactory(koinComponent))
     }
 }

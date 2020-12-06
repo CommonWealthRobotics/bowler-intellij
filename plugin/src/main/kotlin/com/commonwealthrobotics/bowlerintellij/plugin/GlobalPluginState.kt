@@ -14,27 +14,24 @@
  * You should have received a copy of the GNU General Public License
  * along with bowler-intellij.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.commonwealthrobotics.bowlerintellij.module
+package com.commonwealthrobotics.bowlerintellij.plugin
 
-/**
- * Manages the connection between this plugin and the kernel daemon.
- *
- * TODO: Implement a version with a real kernel daemon that persists outside of the plugin's process.
- */
-interface KernelDaemonConnectionManager {
+import org.koin.core.KoinComponent
+import org.koin.dsl.koinApplication
+import org.koin.dsl.module
 
-    /**
-     * Ensures that the daemon is started.
-     */
-    fun ensureStarted()
+object GlobalPluginState {
 
-    /**
-     * Ensures that the daemon is stopped.
-     */
-    fun ensureStopped()
+    val koinComponent = object : KoinComponent {
+        private val koinApp = koinApplication {
+            modules(
+                module {
+                    single<KernelConnectionManager> { DefaultKernelConnectionManager() }
+                    single<BowlerKernelFacade> { DefaultBowlerKernelFacade(get()) }
+                }
+            )
+        }
 
-    /**
-     * @return The port the daemon is running on.
-     */
-    fun getPort(): Int
+        override fun getKoin() = koinApp.koin
+    }
 }

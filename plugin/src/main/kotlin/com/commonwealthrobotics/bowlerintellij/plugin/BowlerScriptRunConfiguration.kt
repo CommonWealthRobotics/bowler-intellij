@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with bowler-intellij.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.commonwealthrobotics.bowlerintellij.module
+package com.commonwealthrobotics.bowlerintellij.plugin
 
 import com.intellij.execution.Executor
 import com.intellij.execution.configurations.ConfigurationFactory
@@ -33,17 +33,26 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.util.xmlb.XmlSerializer
 import org.jdom.Element
 import org.jetbrains.plugins.groovy.GroovyFileType
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
 class BowlerScriptRunConfiguration(
     project: Project,
     factory: ConfigurationFactory?,
-    name: String?
+    name: String?,
+    private val koinComponent: KoinComponent
 ) : RunConfigurationBase<Any>(project, factory, name) {
+
+    private val kernelConnectionManager by koinComponent.inject<KernelConnectionManager>()
 
     var scriptFilePath: String = ""
 
     override fun getState(executor: Executor, environment: ExecutionEnvironment): RunProfileState? {
-        return BowlerScriptRunProfileState(environment)
+        return if (kernelConnectionManager.isConnected) {
+            BowlerScriptRunProfileState(environment, koinComponent)
+        } else {
+            null
+        }
     }
 
     override fun getConfigurationEditor(): SettingsEditor<out RunConfiguration> {

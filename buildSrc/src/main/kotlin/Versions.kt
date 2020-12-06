@@ -20,7 +20,7 @@
  * blocks.
  */
 object Versions {
-    const val bowlerIntellij = "0.1.0"
+    const val projectVersion = "0.1.0"
 
     const val spotlessPlugin = "5.6.1"
     const val testLoggerPlugin = "2.1.0"
@@ -42,10 +42,12 @@ object Versions {
     const val grpc = "1.31.0"
     const val grpcKotlin = "0.1.5"
     const val javaxAnnotationAPI = "1.3.+"
-    const val intellijTarget = "2020.2"
+    const val intellijTarget = "2020.3"
     const val intellijSince = "203"
     const val intellijUntil = "203.*"
-    const val bowlerKernel = "0.3.36"
+    const val bowlerKernel = "0.9.2"
+    const val jgit = "5.4.0.201906121030-r"
+    const val koin = "2.1.+"
 
     const val jacocoTool = "0.8.5"
     const val gradleWrapper = "6.6.1"

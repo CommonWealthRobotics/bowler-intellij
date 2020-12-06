@@ -67,6 +67,7 @@
 
 ### Interface with the Kernel
 
+- When transferring the project to the kernel, the remote `origin` will be used. The patch will be computed relative to the `HEAD` commit on that remote.
 - The kernel daemon must be started and connected to (if not already connected) when the user loads a project.
   - When the kernel is connected, the plugin should load the display daemon and connect the kernel to it.
 - If the kernel daemon becomes unresponsive, it must be restarted.

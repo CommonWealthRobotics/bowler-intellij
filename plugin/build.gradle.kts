@@ -27,9 +27,14 @@ dependencies {
     implementation(group = "io.arrow-kt", name = "arrow-optics", version = Versions.arrow)
     implementation(group = "io.arrow-kt", name = "arrow-fx", version = Versions.arrow)
 
-    implementation(group = "com.commonwealthrobotics", name = "bowler-kernel-server", version = Versions.bowlerKernel)
-
+    implementation(
+        group = "com.commonwealthrobotics",
+        name = "bowler-kernel-kernel-discovery",
+        version = Versions.bowlerKernel
+    )
+    implementation(group = "org.eclipse.jgit", name = "org.eclipse.jgit", version = Versions.jgit)
     implementation(project(":proto"))
+    implementation(project(":di"))
 
     jflex("org.jetbrains.idea:jflex:1.7.0-b7f882a")
     jflexSkeleton("org.jetbrains.idea:jflex:1.7.0-c1fdf11:idea@skeleton")

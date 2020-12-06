@@ -30,6 +30,7 @@
     <idea-version since-build="203" until-build="203.*" />
 
     <extensions defaultExtensionNs="com.intellij">
-        <configurationType implementation="com.commonwealthrobotics.bowlerintellij.module.BowlerScriptRunConfigurationType" />
+        <configurationType implementation="com.commonwealthrobotics.bowlerintellij.plugin.BowlerScriptRunConfigurationType" />
+        <toolWindow id="Kernel" secondary="false" anchor="bottom" factoryClass="com.commonwealthrobotics.bowlerintellij.plugin.KernelToolWindowFactory" />
     </extensions>
 </idea-plugin>

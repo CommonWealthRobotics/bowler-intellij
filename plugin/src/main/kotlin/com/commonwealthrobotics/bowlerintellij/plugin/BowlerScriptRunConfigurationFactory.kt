@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with bowler-intellij.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.commonwealthrobotics.bowlerintellij.module
+package com.commonwealthrobotics.bowlerintellij.plugin
 
 import com.intellij.execution.configurations.RunConfiguration
 import com.intellij.execution.configurations.SimpleConfigurationType
@@ -24,16 +24,19 @@ import com.intellij.psi.search.FileTypeIndex
 import com.intellij.psi.search.GlobalSearchScope
 import icons.JetgroovyIcons
 import org.jetbrains.plugins.groovy.GroovyFileType
+import org.koin.core.KoinComponent
 
-class BowlerScriptRunConfigurationFactory : SimpleConfigurationType(
+class BowlerScriptRunConfigurationFactory(
+    private val koinComponent: KoinComponent
+) : SimpleConfigurationType(
     "Bowler script",
     "Bowler script configuration factory",
     "Runs a Bowler script",
-    NotNullLazyValue.createConstantValue(JetgroovyIcons.Groovy.Groovy_16x16)
+    NotNullLazyValue.createConstantValue(JetgroovyIcons.Groovy.Groovy_16x16),
 ) {
 
     override fun createTemplateConfiguration(project: Project): RunConfiguration {
-        return BowlerScriptRunConfiguration(project, this, "Bowler Script")
+        return BowlerScriptRunConfiguration(project, this, "Bowler Script", koinComponent)
     }
 
     override fun isApplicable(project: Project): Boolean {

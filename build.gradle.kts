@@ -11,9 +11,12 @@ plugins {
     kotlin("jvm") version Versions.kotlin
     id("org.jlleitschuh.gradle.ktlint") version Versions.ktlintPlugin
     id("io.gitlab.arturbosch.detekt") version Versions.detektPlugin
+    idea
 }
 
 val kotlinProjects = listOf(
+    project(":di"),
+    project(":logging"),
     project(":testUtil"),
     project(":plugin"),
     project(":proto"),
@@ -27,7 +30,7 @@ allprojects {
     }
 
     group = "com.commonwealthrobotics"
-    version = Versions.bowlerIntellij
+    version = Versions.projectVersion
 
     repositories {
         mavenCentral()
@@ -71,6 +74,13 @@ allprojects {
             indentWithSpaces(2)
             endWithNewline()
         }
+    }
+}
+
+idea {
+    project.modules.forEach {
+        it.isDownloadJavadoc = true
+        it.isDownloadSources = true
     }
 }
 
