@@ -20,6 +20,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import mu.KotlinLogging
 import java.io.InputStream
 import java.io.OutputStream
 import java.util.concurrent.atomic.AtomicInteger
@@ -54,10 +55,13 @@ class BowlerProcess(private val job: Job, private val exitCode: AtomicInteger) :
     }
 
     override fun destroy() {
+        logger.debug { "Destroying BowlerProcess" }
         job.cancel()
     }
 
     companion object {
+
+        private val logger = KotlinLogging.logger {  }
 
         fun suspended(scope: CoroutineScope, thunk: suspend CoroutineScope.() -> Int): BowlerProcess {
             val exitCode = AtomicInteger(-1)

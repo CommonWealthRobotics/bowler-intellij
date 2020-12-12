@@ -35,6 +35,7 @@ import org.jdom.Element
 import org.jetbrains.plugins.groovy.GroovyFileType
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import java.io.File
 
 class BowlerScriptRunConfiguration(
     project: Project,
@@ -44,8 +45,8 @@ class BowlerScriptRunConfiguration(
 ) : RunConfigurationBase<Any>(project, factory, name) {
 
     private val kernelConnectionManager by koinComponent.inject<KernelConnectionManager>()
-
     var scriptFilePath: String = ""
+    var projectDir: File = project.guessProjectDir()!!.toNioPath().toFile()
 
     override fun getState(executor: Executor, environment: ExecutionEnvironment): RunProfileState? {
         return if (kernelConnectionManager.isConnected) {
@@ -69,7 +70,7 @@ class BowlerScriptRunConfiguration(
         XmlSerializer.serializeInto(this, element)
     }
 
-    fun getScriptFile(): VirtualFile {
+    fun getScriptFile(): File {
         if (StringUtil.isEmptyOrSpaces(scriptFilePath)) {
             throw RuntimeConfigurationError(BIB.message("path.to.script.not.set"))
         }
@@ -96,7 +97,7 @@ class BowlerScriptRunConfiguration(
             )
         }
 
-        return file
+        return file.toNioPath().toFile()
     }
 
     override fun toString(): String {

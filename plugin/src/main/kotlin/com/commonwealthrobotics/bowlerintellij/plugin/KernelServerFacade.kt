@@ -22,6 +22,7 @@ import java.io.OutputStreamWriter
 import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.concurrent.TimeUnit
+import kotlin.concurrent.thread
 
 class KernelServerFacade(
     private val desiredName: String,
@@ -44,7 +45,12 @@ class KernelServerFacade(
                 val processBuilder = ProcessBuilder(cliPath.toAbsolutePath().toString())
 
                 logger.debug { "Starting discovery server and kernel server." }
+
                 proc = processBuilder.start()
+                Runtime.getRuntime().addShutdownHook(thread(start = false) {
+                    proc!!.destroyForcibly()
+                })
+
                 procOS = BufferedWriter(OutputStreamWriter(proc!!.outputStream)).apply {
                     write(
                         """

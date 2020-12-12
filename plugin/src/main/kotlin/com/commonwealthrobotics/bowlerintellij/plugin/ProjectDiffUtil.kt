@@ -24,16 +24,15 @@ import java.io.File
 
 object ProjectDiffUtil {
 
-    internal fun setFileSpec(runRequestBuilder: RunRequest.Builder, projectDir: VirtualFile, scriptFile: VirtualFile) {
+    internal fun setFileSpec(runRequestBuilder: RunRequest.Builder, projectDir: File, scriptFile: File) {
         // TODO: Support projects that are not git-init'd
 
-        val projectDirFile = projectDir.toNioPath().toFile()
         val relativeScriptPath = scriptFile.path.substring(projectDir.path.length + 1)
         logger.debug { "relativeScriptPath=$relativeScriptPath" }
 
-        runRequestBuilder.fileBuilder.projectBuilder.repoRemote = getRemoteURL(projectDirFile)
-        runRequestBuilder.fileBuilder.projectBuilder.revision = getRemoteHead(projectDirFile)
-        runRequestBuilder.fileBuilder.projectBuilder.patchBuilder.patch = ByteString.copyFrom(getDiff(projectDirFile))
+        runRequestBuilder.fileBuilder.projectBuilder.repoRemote = getRemoteURL(projectDir)
+        runRequestBuilder.fileBuilder.projectBuilder.revision = getRemoteHead(projectDir)
+        runRequestBuilder.fileBuilder.projectBuilder.patchBuilder.patch = ByteString.copyFrom(getDiff(projectDir))
         runRequestBuilder.fileBuilder.path = relativeScriptPath
     }
 

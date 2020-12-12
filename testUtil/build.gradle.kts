@@ -1,6 +1,8 @@
 description = "Test utilities for internal use."
 
 dependencies {
+    api(project(":di"))
+
     api(group = "org.junit.jupiter", name = "junit-jupiter-api", version = Versions.junit)
     api(group = "org.junit.jupiter", name = "junit-jupiter-engine", version = Versions.junit)
     api(group = "org.junit.jupiter", name = "junit-jupiter-params", version = Versions.junit)

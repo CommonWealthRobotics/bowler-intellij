@@ -35,7 +35,7 @@ class BowlerScriptRunConfigurationFactory(
     NotNullLazyValue.createConstantValue(JetgroovyIcons.Groovy.Groovy_16x16),
 ) {
 
-    override fun createTemplateConfiguration(project: Project): RunConfiguration {
+    override fun createTemplateConfiguration(project: Project): BowlerScriptRunConfiguration {
         return BowlerScriptRunConfiguration(project, this, "Bowler Script", koinComponent)
     }
 

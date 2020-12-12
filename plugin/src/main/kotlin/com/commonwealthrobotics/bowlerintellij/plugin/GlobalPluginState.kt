@@ -16,17 +16,24 @@
  */
 package com.commonwealthrobotics.bowlerintellij.plugin
 
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.asCoroutineDispatcher
+import kotlinx.coroutines.newFixedThreadPoolContext
+import kotlinx.coroutines.newSingleThreadContext
 import org.koin.core.KoinComponent
 import org.koin.dsl.koinApplication
 import org.koin.dsl.module
+import java.util.concurrent.Executors
 
 object GlobalPluginState {
 
     val koinComponent = object : KoinComponent {
+        private val scope = CoroutineScope(Executors.newFixedThreadPool(2).asCoroutineDispatcher())
         private val koinApp = koinApplication {
             modules(
                 module {
-                    single<KernelConnectionManager> { DefaultKernelConnectionManager() }
+                    single<KernelConnectionManager> { DefaultKernelConnectionManager(scope) }
                     single<BowlerKernelFacade> { DefaultBowlerKernelFacade(get()) }
                 }
             )

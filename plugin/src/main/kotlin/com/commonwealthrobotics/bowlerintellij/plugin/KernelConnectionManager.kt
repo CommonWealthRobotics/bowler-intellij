@@ -18,6 +18,10 @@ package com.commonwealthrobotics.bowlerintellij.plugin
 
 import arrow.core.Tuple2
 import com.commonwealthrobotics.proto.script_host.ScriptHostGrpcKt
+import com.commonwealthrobotics.proto.script_host.SessionClientMessage
+import com.commonwealthrobotics.proto.script_host.SessionServerMessage
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import java.net.InetAddress
 
 typealias KernelConnectionListener = (Tuple2<InetAddress, Int>?) -> Unit
@@ -29,10 +33,10 @@ interface KernelConnectionManager {
      */
     val isConnected: Boolean
 
-    /**
-     * The coroutine stub on top of the current connection. This throws if there is no connection.
-     */
-    val stub: ScriptHostGrpcKt.ScriptHostCoroutineStub
+    suspend fun <T> request(
+        msg: SessionClientMessage.Builder,
+        loop: suspend (Channel<SessionClientMessage.Builder?>, Channel<SessionServerMessage>) -> T
+    ): T
 
     /**
      * Connect to the kernel server running at the [address] and [port].
