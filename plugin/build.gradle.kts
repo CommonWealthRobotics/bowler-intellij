@@ -33,7 +33,7 @@ dependencies {
         version = Versions.bowlerKernel
     )
     implementation(group = "org.eclipse.jgit", name = "org.eclipse.jgit", version = Versions.jgit)
-    implementation(project(":proto"))
+    implementation(group = "com.commonwealthrobotics", name = "bowler-proto-kotlin", version = Versions.bowlerProtoKotlin)
     implementation(project(":di"))
 
     jflex("org.jetbrains.idea:jflex:1.7.0-b7f882a")

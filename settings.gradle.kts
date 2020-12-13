@@ -7,7 +7,6 @@ rootProject.name = "bowler-intellij"
 include(":di")
 include(":logging")
 include(":plugin")
-include(":proto")
 include(":testUtil")
 include(":util")
 

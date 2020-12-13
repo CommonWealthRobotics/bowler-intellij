@@ -19,7 +19,6 @@ val kotlinProjects = listOf(
     project(":logging"),
     project(":testUtil"),
     project(":plugin"),
-    project(":proto"),
     project(":util")
 )
 
@@ -35,6 +34,11 @@ allprojects {
     repositories {
         mavenCentral()
         jcenter()
+        maven("https://dl.bintray.com/commonwealthrobotics/maven-artifacts") {
+            content {
+                includeGroup("com.commonwealthrobotics")
+            }
+        }
     }
 
     // Configures the Jacoco tool version to be the same for all projects that have it applied.
