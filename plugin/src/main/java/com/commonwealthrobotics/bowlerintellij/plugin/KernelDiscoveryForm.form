@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.commonwealthrobotics.bowlerintellij.plugin.KernelDiscoveryForm">
+  <grid id="27dc6" binding="content" layout-manager="GridLayoutManager" row-count="5" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="0" bottom="0" right="0"/>
+    <constraints>
+      <xy x="20" y="20" width="987" height="400"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <component id="6571a" class="javax.swing.JTextField" binding="managedKernelServerNameField">
+        <constraints>
+          <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="1faec" class="javax.swing.JButton" binding="startManagedKernelServerButton">
+        <constraints>
+          <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text resource-bundle="bowler-intellij" key="kernel.discovery.start.server"/>
+        </properties>
+      </component>
+      <component id="7ea6f" class="javax.swing.JButton" binding="stopManagedKernelServerButton" default-binding="true">
+        <constraints>
+          <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <enabled value="false"/>
+          <text resource-bundle="bowler-intellij" key="kernel.discovery.stop.server"/>
+        </properties>
+      </component>
+      <vspacer id="71ded">
+        <constraints>
+          <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </vspacer>
+      <component id="50517" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="0" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text resource-bundle="bowler-intellij" key="kernel.discovery.start.kernel.server"/>
+        </properties>
+      </component>
+      <component id="d9c4a" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text resource-bundle="bowler-intellij" key="kernel.discovery.new.kernel.server.name"/>
+        </properties>
+      </component>
+      <grid id="f8e8e" layout-manager="GridLayoutManager" row-count="4" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="0" column="0" row-span="5" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <scrollpane id="721a4">
+            <constraints>
+              <grid row="3" column="0" row-span="1" col-span="2" vsize-policy="7" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="2050" class="com.intellij.ui.components.JBList" binding="kernelsList">
+                <constraints/>
+                <properties>
+                  <model/>
+                  <selectionMode value="0"/>
+                </properties>
+              </component>
+            </children>
+          </scrollpane>
+          <component id="2c58d" class="javax.swing.JButton" binding="refreshButton" default-binding="true">
+            <constraints>
+              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text resource-bundle="bowler-intellij" key="refresh"/>
+            </properties>
+          </component>
+          <component id="35346" class="javax.swing.JButton" binding="connectToSelectedKernelButton" default-binding="true">
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="246" height="30"/>
+              </grid>
+            </constraints>
+            <properties>
+              <text resource-bundle="bowler-intellij" key="kernel.discovery.connect.to.selected.kernel"/>
+            </properties>
+          </component>
+          <component id="1d7a5" class="javax.swing.JButton" binding="disconnectFromCurrentKernelButton" default-binding="true">
+            <constraints>
+              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <enabled value="false"/>
+              <text resource-bundle="bowler-intellij" key="kernel.discovery.disconnect.kernel"/>
+            </properties>
+          </component>
+          <component id="45009" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text resource-bundle="bowler-intellij" key="kernel.discovery.current.connected.kernel"/>
+            </properties>
+          </component>
+          <component id="66c36" class="javax.swing.JLabel" binding="currentlyConnectedKernelLabel">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text resource-bundle="bowler-intellij" key="kernel.discovery.not.connected"/>
+            </properties>
+          </component>
+          <component id="b2703" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text resource-bundle="bowler-intellij" key="kernel.discovery.available.kernels"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+    </children>
+  </grid>
+</form>

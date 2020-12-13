@@ -11,10 +11,14 @@ plugins {
     kotlin("jvm") version Versions.kotlin
     id("org.jlleitschuh.gradle.ktlint") version Versions.ktlintPlugin
     id("io.gitlab.arturbosch.detekt") version Versions.detektPlugin
+    idea
 }
 
 val kotlinProjects = listOf(
+    project(":di"),
+    project(":logging"),
     project(":testUtil"),
+    project(":plugin"),
     project(":util")
 )
 
@@ -25,13 +29,14 @@ allprojects {
     }
 
     group = "com.commonwealthrobotics"
-    version = Versions.bowlerIntellij
+    version = Versions.projectVersion
 
     repositories {
         mavenCentral()
-        jcenter {
+        jcenter()
+        maven("https://dl.bintray.com/commonwealthrobotics/maven-artifacts") {
             content {
-                includeGroup("org.jetbrains.kotlinx")
+                includeGroup("com.commonwealthrobotics")
             }
         }
     }
@@ -73,6 +78,13 @@ allprojects {
             indentWithSpaces(2)
             endWithNewline()
         }
+    }
+}
+
+idea {
+    project.modules.forEach {
+        it.isDownloadJavadoc = true
+        it.isDownloadSources = true
     }
 }
 
@@ -158,6 +170,7 @@ configure(kotlinProjects) {
     dependencies {
         implementation(group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", version = Versions.kotlin)
         implementation(group = "org.jetbrains.kotlin", name = "kotlin-reflect", version = Versions.kotlin)
+        implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version = Versions.kotlinCoroutines)
 
         implementation(group = "io.github.microutils", name = "kotlin-logging", version = Versions.kotlinLogging)
     }
@@ -185,6 +198,11 @@ configure(kotlinProjects) {
         version.set(Versions.ktlint)
         enableExperimentalRules.set(true)
         additionalEditorconfigFile.set(file(rootProject.rootDir.toPath().resolve("config").resolve("ktlint").resolve(".editorconfig")))
+        filter {
+            exclude {
+                it.file.path.contains("generated/")
+            }
+        }
     }
 
     detekt {
@@ -220,5 +238,5 @@ val jacocoRootReport by tasks.creating(JacocoReport::class) {
 
 tasks.wrapper {
     distributionType = Wrapper.DistributionType.ALL
-    version = Versions.gradleWrapper
+    gradleVersion = Versions.gradleWrapper
 }

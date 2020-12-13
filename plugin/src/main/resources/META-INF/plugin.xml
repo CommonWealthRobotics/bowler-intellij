@@ -1,0 +1,36 @@
+<!--
+   ~ This file is part of bowler-intellij.
+   ~
+   ~ bowler-intellij is free software: you can redistribute it and/or modify
+   ~ it under the terms of the GNU Lesser General Public License as published by
+   ~ the Free Software Foundation, either version 3 of the License, or
+   ~ (at your option) any later version.
+   ~
+   ~ bowler-intellij is distributed in the hope that it will be useful,
+   ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+   ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   ~ GNU Lesser General Public License for more details.
+   ~
+   ~ You should have received a copy of the GNU Lesser General Public License
+   ~ along with bowler-kernel.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<idea-plugin>
+    <name>Bowler Studio</name>
+    <id>com.commonwealthrobotics.bowlerintellij</id>
+    <description>Enables Robotics Development with Bowler</description>
+    <version>0.1.0</version>
+    <vendor url="https://commonwealthrobotics.com">CommonWealthRobotics</vendor>
+
+    <!-- Product and plugin compatibility requirements -->
+    <!-- https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html -->
+    <depends>com.intellij.modules.lang</depends>
+    <depends>com.intellij.modules.platform</depends>
+    <depends>org.intellij.groovy</depends>
+
+    <idea-version since-build="203" until-build="203.*" />
+
+    <extensions defaultExtensionNs="com.intellij">
+        <configurationType implementation="com.commonwealthrobotics.bowlerintellij.plugin.BowlerScriptRunConfigurationType" />
+        <toolWindow id="Kernel" secondary="false" anchor="bottom" factoryClass="com.commonwealthrobotics.bowlerintellij.plugin.KernelToolWindowFactory" />
+    </extensions>
+</idea-plugin>
